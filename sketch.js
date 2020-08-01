@@ -32,16 +32,18 @@ function preload() {
   loadTexture('2');
   loadTexture('3');
   loadTexture('4');
+  loadTexture('w');
+  loadTexture('b');
 }
 
 function setup() {
   const cnv = createCanvas(windowWidth, windowHeight);
-  background(150);
+  background(122, 107, 83);
   cnv.mouseClicked(lock(Button.onClick, buttons));
   for (let i = 0; i < tile.amount; i++) {
     for (let j = 0; j < tile.amount; j++) {
       buttons.push(new Button(lock(pressed, i, j), tile.startX + i * tile.size, tile.startY + j * tile.size,
-        tile.size, tile.size, false, null, '', (i + j) % 2 ? color(100) : color(245)));
+        tile.size, tile.size, false, (i + j) % 2 ? textures.b : textures.w, '', (i + j) % 2 ? color(100) : color(245)));
     }
   }
   setCheckers();
@@ -267,10 +269,6 @@ function canBeatDamka(i, j, plr, oppon, setAm = true) {
           _check(k1, k2, ++d);
         }
       }
-      // if (val === oppon.num || val === oppon.num + 2) {
-      //   if (setAm) availMoves[i + d * k1][j + d * k2] = 4;
-      //   res = true;
-      // }
     }
     catch {}
   }
