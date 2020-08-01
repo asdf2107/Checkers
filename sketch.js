@@ -2,9 +2,9 @@ const textures = {};
 const buttons = [];
 let c = [];
 const tile = {
-  size: 80,
+  size: 64,
   startX: 200,
-  startY: 0,
+  startY: 80,
   amount: 8,
 }
 const direction = {
@@ -13,6 +13,7 @@ const direction = {
   left: 2,
   right: 3,
 }
+let cnv;
 const players = {};
 let availMoves = []; //1-go, 2-beat, 3-damka-go, 4-damka-beat
 let beat = { i: -1, j: -1 };
@@ -34,16 +35,18 @@ function preload() {
   loadTexture('4');
   loadTexture('w');
   loadTexture('b');
+  loadTexture('board');
 }
 
 function setup() {
-  const cnv = createCanvas(windowWidth, windowHeight);
+  cnv = createCanvas(windowWidth, windowHeight);
+  tile.startX = (width - (tile.amount + 1) * tile.size) / 2;
   background(122, 107, 83);
   cnv.mouseClicked(lock(Button.onClick, buttons));
   for (let i = 0; i < tile.amount; i++) {
     for (let j = 0; j < tile.amount; j++) {
       buttons.push(new Button(lock(pressed, i, j), tile.startX + i * tile.size, tile.startY + j * tile.size,
-        tile.size, tile.size, false, (i + j) % 2 ? textures.b : textures.w, '', (i + j) % 2 ? color(100) : color(245)));
+        tile.size, tile.size));
     }
   }
   setCheckers();
@@ -303,9 +306,23 @@ function setCheckers() {
 
 function draw() {
   noSmooth();
-  buttons.forEach(b => b.draw());
+  strokeWeight(0);
+  drawBoardFrame();
+  drawTiles();
   drawAvail();
   drawCheckers();
+}
+
+function drawBoardFrame() {
+  image(textures.board, tile.startX - tile.size, tile.startY - tile.size, tile.size * 10, tile.size * 10);
+}
+
+function drawTiles() {
+  for (let i = 0; i < tile.amount; i++) {
+    for (let j = 0; j < tile.amount; j++) {
+      image((i + j) % 2 ? textures.b : textures.w, tile.startX + i * tile.size, tile.startY + j * tile.size, tile.size, tile.size);
+    }
+  }
 }
 
 function drawAvail() {
@@ -318,7 +335,8 @@ function drawAvail() {
     }
   }
   fill(255, 255, 0, 60);
-  rect(tile.startX + chosen.i * tile.size, tile.startY + chosen.j * tile.size, tile.size, tile.size);
+  if (chosen.i >= 0 && chosen.j >= 0)
+    rect(tile.startX + chosen.i * tile.size, tile.startY + chosen.j * tile.size, tile.size, tile.size);
 }
 
 function drawCheckers() {
