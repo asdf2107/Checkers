@@ -29,9 +29,9 @@ class Player {
 }
 
 function preload() {
-  loadTexture('1');
+  loadTexture('1', '1a');
   loadTexture('2');
-  loadTexture('3');
+  loadTexture('3', '3a');
   loadTexture('4');
   loadTexture('w');
   loadTexture('b');

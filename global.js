@@ -1,7 +1,7 @@
 let money = 100;
 
-function loadTexture(name) {
-  textures[name] = loadImage(`textures/${name}.png`);
+function loadTexture(name, path = name) {
+  textures[name] = loadImage(`textures/${path}.png`);
 }
 
 function toMenu() {
