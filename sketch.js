@@ -94,6 +94,7 @@ function pressed(i, j) {
   } else {
     chosen = { i: last.i, j: last.j };
   }
+  checkDamkis();
 }
 
 let anyToBeat;
@@ -103,7 +104,6 @@ function nextTurn() {
   const getOpPlr = () => curPlr == players.p1 ? players.p2 : players.p1;
   curPlr = getOpPlr();
   opPlr = getOpPlr();
-  checkDamkis();
   anyToBeat = isAnyToBeat();
 }
 
