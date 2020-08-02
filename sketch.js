@@ -40,7 +40,7 @@ function preload() {
 
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
-  tile.startX = (width - (tile.amount + 1) * tile.size) / 2;
+  tile.startX = (width - (tile.amount) * tile.size) / 2;
   background(122, 107, 83);
   cnv.mouseClicked(lock(Button.onClick, buttons));
   for (let i = 0; i < tile.amount; i++) {
