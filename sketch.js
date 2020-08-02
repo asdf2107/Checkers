@@ -1,8 +1,8 @@
 const textures = {};
-const buttons = [];
+let buttons = [];
 let c = [];
 const tile = {
-  size: 64,
+  size: 80,
   startX: 200,
   startY: 80,
   amount: 8,
@@ -38,17 +38,49 @@ function preload() {
   loadTexture('board');
 }
 
-function setup() {
-  cnv = createCanvas(windowWidth, windowHeight);
+function bgr() {
+  const backCol = color(122, 107, 83);
+  background(backCol);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  resize();
+}
+
+function resize() {
+  const getMinSize = () => 10 * tile.size;
+  const step = 16;
+  while (windowWidth - getMinSize() < 0 || windowHeight - getMinSize() < 0) {
+    if (tile.size <= step) break;
+    tile.size -= step;
+  };
+  while (windowWidth - getMinSize() - 10 * step >= 0 && windowHeight - getMinSize() - 10 * step >= 0) {
+    tile.size += step;
+  };
   tile.startX = (width - (tile.amount) * tile.size) / 2;
-  background(122, 107, 83);
-  cnv.mouseClicked(lock(Button.onClick, buttons));
+  tile.startY = (height - (tile.amount) * tile.size) / 2;
+  bgr();
+  setButtons();
+}
+
+function setButtons() {
+  buttons.splice(0, buttons.length);
   for (let i = 0; i < tile.amount; i++) {
     for (let j = 0; j < tile.amount; j++) {
       buttons.push(new Button(lock(pressed, i, j), tile.startX + i * tile.size, tile.startY + j * tile.size,
         tile.size, tile.size));
+      print(tile.startX + i * tile.size, tile.startY + j * tile.size,
+        tile.size, tile.size);
     }
   }
+  print('bruh');
+}
+
+function setup() {
+  const cnv = createCanvas(windowWidth, windowHeight);
+  resize();
+  cnv.mouseClicked(lock(Button.onClick, buttons));
   setCheckers();
   initAvailMoves();
   players.p1 = (new Player(1, direction.up));
